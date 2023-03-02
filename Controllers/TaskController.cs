@@ -1,8 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
-// using System.Collections.Generic;
-// using System.Threading.Tasks;
-// using System.Linq;
-// using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Linq;
+using Microsoft.Extensions.Logging;
+using lesson1.Interfaces;
 
 
 namespace lesson1.Controllers;
@@ -11,17 +12,23 @@ namespace lesson1.Controllers;
   [Route("[controller]")]
 public class TaskController : ControllerBase
 {
-    [HttpGet]
+        private ITaskService service;
+        public TaskController(ITaskService tasksSer)
+        {
+            this.service = tasksSer;
+        }
+
+        [HttpGet]
         public IEnumerable<Task> Get()
         {
-            return TaskService.GetAll();
+            return service.GetAll();
 
         }
 
         [HttpGet("{id}")]
         public ActionResult<Task> Get(int id)
         {
-            var task = TaskService.Get(id);
+            var task = service.Get(id);
             if (task == null)
                 return NotFound();
              return task;
@@ -30,15 +37,14 @@ public class TaskController : ControllerBase
        [HttpPost]
         public ActionResult Post(Task task)
         {
-            TaskService.Add(task);
-
+            service.Add(task);
             return CreatedAtAction(nameof(Post), new { id = task.Id }, task);
         }
 
         [HttpPut("{id}")]
         public ActionResult Put(int id, Task task)
         {
-            if (! TaskService.Update(id, task))
+            if (! service.Update(id, task))
                 return BadRequest();
             return NoContent();
         }
@@ -46,14 +52,10 @@ public class TaskController : ControllerBase
         [HttpDelete("{id}")]
         public ActionResult Delete (int id)
         {
-            if (! TaskService.Delete(id))
+            if (! service.Delete(id))
                 return NotFound();
             return NoContent();            
         }
-
-
-
 }
-   
 
     
