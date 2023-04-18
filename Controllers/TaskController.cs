@@ -1,11 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using lesson1.Interfaces;
+using lesson1.Services;
 using Microsoft.AspNetCore.Authorization;
 
 namespace lesson1.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[Authorize(Policy = "Agent")]
 public class TaskController : ControllerBase
 {
     private ITaskService service;
@@ -14,19 +16,22 @@ public class TaskController : ControllerBase
         this.service = tasksSer;
     }
 
-    [HttpGet]
-    [Authorize(Policy = "Admin")]
-    public IEnumerable<Task> Get()
-    {
-        return service.GetAll();
+
+   [HttpGet("{id}")]
+    public ActionResult<Task> Get(int id)
+    {     
+        string token = HttpContext.Request.Headers["Authorization"];
+        List<Task> resultList = service.Get(token);
+        Task task=resultList.FirstOrDefault(t=>t.Id == id);
+        if (task == null)
+            return NotFound();
+        return task;
     }
     [HttpGet]
-    [Route("GetUserTasks")]
-    [Authorize(Policy = "Agent")]
-    public ActionResult<List<Task>> GetUserTasks()
+    public ActionResult<List<Task>> Get()
     {
+        System.Console.WriteLine("in get tasks");
         string token = HttpContext.Request.Headers["Authorization"];
-        System.Console.WriteLine(token);
         List<Task> resultList = service.Get(token);
         if (resultList == null)
             return NotFound();
@@ -34,27 +39,32 @@ public class TaskController : ControllerBase
     }
 
     [HttpPost]
-    [Authorize(Policy = "Agent")]
     public ActionResult Post(Task task)
     {
+        System.Console.WriteLine($" taskName: {task.Name}");
+        string userId = TokenService.DecodeToken(HttpContext.Request.Headers["Authorization"]);
+        task.User = userId;
         service.Add(task);
         return CreatedAtAction(nameof(Post), new { id = task.Id }, task);
     }
 
     [HttpPut("{id}")]
-    [Authorize(Policy = "Agent")]
     public ActionResult Put(int id, Task task)
-    {
+    {   
+        string userId = TokenService.DecodeToken(HttpContext.Request.Headers["Authorization"]);
+        task.User=userId;
         if (!service.Update(id, task))
-            return BadRequest();
+           return BadRequest();
+           System.Console.WriteLine($" Update user: {userId}");
         return NoContent();
     }
 
     [HttpDelete("{id}")]
-    [Authorize(Policy = "Agent")]
     public ActionResult Delete(int id)
     {
-        if (!service.Delete(id))
+        string userId = TokenService.DecodeToken(HttpContext.Request.Headers["Authorization"]);
+        System.Console.WriteLine($"in delete user:{userId}");
+        if (!service.Delete(id,userId))
             return NotFound();
         return NoContent();
     }

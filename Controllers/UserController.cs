@@ -40,7 +40,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    [Authorize(Policy = "Agent")]
+    [Authorize(Policy = "Admin")]
     public ActionResult Put(string id, User user)
     {
         if (!service.Update(id, user))
@@ -81,7 +81,7 @@ new Claim("Classification",authUser.Classification),
         var token = TokenService.GetToken(claims);
         string myToken = HttpContext.Request.Headers["Authorization"];
 
-        return new OkObjectResult(TokenService.WriteToken(token));
+        return new OkObjectResult(new { Token = TokenService.WriteToken(token), UserId = authUser.Id, Classification = authUser.Classification });
     }
 
 

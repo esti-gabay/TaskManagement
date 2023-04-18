@@ -42,8 +42,9 @@ namespace lesson1.Services
 
         public void Add(User user)
         {
-            user.Id = users.Max(t => t.Id) + 1;
+            user.Id = (Int32.Parse(users.Max(u=>u.Id)!) + 1).ToString();
             users.Add(user);
+            System.Console.WriteLine($"Add user: {user.Id}");
             saveToFile();
         }
 
@@ -56,6 +57,7 @@ namespace lesson1.Services
             user2.UserName = user.UserName;
             user2.Password = user.Password;
             user2.Classification = user.Classification;
+            System.Console.WriteLine($" Update user: {id}");
             saveToFile();
             return true;
         }
@@ -67,6 +69,7 @@ namespace lesson1.Services
                 return false;
             users.Remove(user);
             string userId = user.Id;
+            System.Console.WriteLine($"Delete user: {userId}");
 
             saveToFile();
             return true;

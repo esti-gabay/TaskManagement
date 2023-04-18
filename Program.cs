@@ -18,8 +18,8 @@ builder.Services.AddAuthentication(options =>
 });
 builder.Services.AddAuthorization(cfg =>
 {
-    cfg.AddPolicy("Admin", policy => policy.RequireClaim("Classification", "1"));
-    cfg.AddPolicy("Agent", policy => policy.RequireClaim("Classification", "2"));
+    cfg.AddPolicy("Admin", policy => policy.RequireClaim("Classification", "admin"));
+    cfg.AddPolicy("Agent", policy => policy.RequireClaim("Classification", "agent"));
 });
 builder.Services.AddSwaggerGen(c =>
 {

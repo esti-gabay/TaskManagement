@@ -44,8 +44,9 @@ namespace lesson1.Services
 
         public void Add(Task task)
         {
-            task.Id = tasks.Max(t => t.Id) + 1;
+            task.Id = tasks.Max(t => t.Id)+1;
             tasks.Add(task);
+            System.Console.WriteLine("in add task");
             saveToFile();
         }
 
@@ -57,13 +58,15 @@ namespace lesson1.Services
             var task2 = tasks.FirstOrDefault(t => t.Id == id);
             task2.Name = task.Name;
             task2.TaskAccomplished = task.TaskAccomplished;
+             System.Console.WriteLine("in update task");
             saveToFile();
             return true;
         }
 
-        public bool Delete(int id)
+        public bool Delete(int id,string userId)
         {
-            var task = tasks.FirstOrDefault(p => p.Id == id);
+            List<Task> tasksList = tasks.Where(t=>t.User==userId).ToList();
+            var task = tasksList.FirstOrDefault(p => p.Id == id);
             if (task == null)
                 return false;
             tasks.Remove(task);

@@ -3,7 +3,7 @@ let tasks = [];
 const token = sessionStorage.getItem('auth');
 
 function getItems() {
-    fetch(uri)
+     fetch(uri ,{headers:{'Authorization':token}})
         .then(response => response.json())
         .then(data => _displayItems(data))
         .catch(error => console.error('Unable to get items.', error));
@@ -11,15 +11,18 @@ function getItems() {
 
 function addItem() {
     const addNameTextbox = document.getElementById('add-name');
-
+    alert('Add Task',tasks.length);
     const item = {
-        TaskAccomplished: false,
-        Name: addNameTextbox.value.trim()
+        id:tasks.length+104,
+        name: addNameTextbox.value.trim(),
+        taskAccomplished: false
     };
+    alert(item.id);
 
     fetch(uri, {
         method: 'POST',
         headers: {
+            'Authorization':token,
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
@@ -35,14 +38,16 @@ function addItem() {
 
 function deleteItem(id) {
     fetch(`${uri}/${id}`, {
-        method: 'DELETE'
+        method: 'DELETE',
+        headers:{'Authorization':token}
+      
     })
         .then(() => getItems())
         .catch(error => console.error('Unable to delete item.', error));
 }
 
 function displayEditForm(id) {
-    const item = tasks.find(item => item.id === id);
+    const item = tasks.find(t => t.id === id);
 
     document.getElementById('edit-name').value = item.name;
     document.getElementById('edit-id').value = item.id;
@@ -52,15 +57,17 @@ function displayEditForm(id) {
 
 function updateItem() {
     const itemId = document.getElementById('edit-id').value;
+    alert('Update task');
     const item = {
         id: parseInt(itemId, 10),
-        TaskAccomplished: document.getElementById('edit-taskAccomplished').checked,
-        Name: document.getElementById('edit-name').value.trim()
+        taskaccomplished: document.getElementById('edit-taskAccomplished').checked,
+        name: document.getElementById('edit-name').value.trim()
     };
 
-    fetch(`${uri}/${itemId}`, {
+    fetch(`${uri}/${item.id}`, {
         method: 'PUT',
         headers: {
+            'Authorization':token,
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },

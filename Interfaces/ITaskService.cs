@@ -11,6 +11,6 @@ namespace lesson1.Interfaces
 
         public bool Update(int id, Task task);
 
-        public bool Delete(int id);
+        public bool Delete(int id,string userId);
     }
 }
