@@ -13,7 +13,7 @@ public class TaskController : ControllerBase
     private ITaskService service;
     public TaskController(ITaskService tasksSer)
     {
-        this.service = tasksSer;
+        service = tasksSer;
     }
 
 
@@ -69,5 +69,3 @@ public class TaskController : ControllerBase
         return NoContent();
     }
 }
-
-

@@ -9,7 +9,6 @@ namespace lesson1.Middleware
         )
         {
             return app.UseMiddleware<LogMiddleware>();
-
         }
     }
 }

@@ -3,7 +3,7 @@ let tasks = [];
 const token = sessionStorage.getItem('auth');
 
 function getItems() {
-     fetch(uri ,{headers:{'Authorization':token}})
+    fetch(uri, { headers: { 'Authorization': token } })
         .then(response => response.json())
         .then(data => _displayItems(data))
         .catch(error => console.error('Unable to get items.', error));
@@ -11,9 +11,9 @@ function getItems() {
 
 function addItem() {
     const addNameTextbox = document.getElementById('add-name');
-    alert('Add Task',tasks.length);
+    alert('Add Task', tasks.length);
     const item = {
-        id:tasks.length+104,
+        id: tasks.length + 104,
         name: addNameTextbox.value.trim(),
         taskAccomplished: false
     };
@@ -22,7 +22,7 @@ function addItem() {
     fetch(uri, {
         method: 'POST',
         headers: {
-            'Authorization':token,
+            'Authorization': token,
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
@@ -39,8 +39,8 @@ function addItem() {
 function deleteItem(id) {
     fetch(`${uri}/${id}`, {
         method: 'DELETE',
-        headers:{'Authorization':token}
-      
+        headers: { 'Authorization': token }
+
     })
         .then(() => getItems())
         .catch(error => console.error('Unable to delete item.', error));
@@ -67,7 +67,7 @@ function updateItem() {
     fetch(`${uri}/${item.id}`, {
         method: 'PUT',
         headers: {
-            'Authorization':token,
+            'Authorization': token,
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
@@ -107,10 +107,11 @@ function _displayItems(data) {
 
         let editButton = button.cloneNode(false);
         editButton.innerText = 'Edit';
+        editButton.className = 'button';
         editButton.setAttribute('onclick', `displayEditForm(${item.id})`);
 
         let deleteButton = button.cloneNode(false);
-        deleteButton.innerText = 'Delete';
+        deleteButton.innerText = '❌';
         deleteButton.setAttribute('onclick', `deleteItem(${item.id})`);
 
         let tr = tBody.insertRow();

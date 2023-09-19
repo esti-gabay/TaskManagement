@@ -2,57 +2,50 @@
 let loginUri = '/User/Login'
 let token;
 const varify = () => {
-    const username = document.getElementById('uname');
-    const password = document.getElementById('pwd');
-    console.log(username);
-    const user = {
-        Id: "",
-        UserName: username.value.trim(),
-        Classification: "",
-        Password: password.value.trim()
-    };
+  const username = document.getElementById('uname');
+  const password = document.getElementById('pwd');
+  const user = {
+    Id: "",
+    UserName: username.value.trim(),
+    Classification: "",
+    Password: password.value.trim()
+  };
 
-    fetch(loginUri, {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(user)
+  fetch(loginUri, {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(user)
 
+  })
+    .then(response => {
+      if (response.ok) {
+        return response.text();
+      }
+      else
+        throw new Error('Invalid');
     })
-        .then(response => {
-            // username.value = '';
-            // password.value=''
-            if (response.ok) {
-                return response.text();
-            }
-            else
-                throw new Error('Invalid');
-        })
-        .then(res => {
-           const classification = parseJwt(res.split('\"')[1]);
-           alert(classification.Classification);
-            sessionStorage.setItem('auth', "Bearer ".concat(res.split('\"')[1]) );
-            alert(sessionStorage.getItem('auth'));
-            if (classification.Classification === "admin")
-             {
-                window.location.href = './UserManagement.html';
-            }
-            else 
-            {
-                window.location.href = './TaskManagement.html';
-            }
-        })
-        .catch(error => window.location.href = './error.html');
+    .then(res => {
+      const classification = parseJwt(res.split('\"')[1]);
+      sessionStorage.setItem('auth', "Bearer ".concat(res.split('\"')[1]));
+      if (classification.Classification === "admin") {
+        window.location.href = './UserManagement.html';
+      }
+      else {
+        window.location.href = './TaskManagement.html';
+      }
+    })
+    .catch(error => window.location.href = './error.html');
 }
 
 
-function parseJwt (token){
+function parseJwt(token) {
   var base64Url = token.split('.')[1];
   var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-  var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
-      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+  var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function (c) {
+    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
   }).join(''));
 
   return JSON.parse(jsonPayload);

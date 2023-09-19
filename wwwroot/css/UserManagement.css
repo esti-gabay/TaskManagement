@@ -7,19 +7,12 @@ button,
 #editForm {
     display: none;
 }
-
-table {
-    font-family: Arial, sans-serif;
-    border: 1px solid;
-    border-collapse: collapse;
+body{
+    background-color: rgba(51, 51, 51, 0.5);
 }
-
-th {
-    background-color: #f8f8f8;
-    padding: 5px;
+.container{
+    width: 40%; 
 }
-
-td {
-    border: 1px solid;
-    padding: 5px;
+.users-container{
+   text-align: center;
 }

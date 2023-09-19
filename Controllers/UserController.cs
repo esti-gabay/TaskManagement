@@ -58,8 +58,6 @@ public class UserController : ControllerBase
         return NoContent();
     }
 
-
-
     [HttpPost]
     [Route("[action]")]
     public ActionResult<String> Login([FromBody] User User)
@@ -72,17 +70,15 @@ public class UserController : ControllerBase
         }
 
         var claims = new List<Claim>
-{
-new Claim("UserName",authUser.UserName),
-new Claim("Id", authUser.Id),
-new Claim("Classification",authUser.Classification),
-};
+        {
+               new("UserName",authUser.UserName),
+               new("Id", authUser.Id),
+               new("Classification",authUser.Classification),
+        };
 
         var token = TokenService.GetToken(claims);
         //string myToken = HttpContext.Request.Headers["Authorization"]!;
 
-        return new OkObjectResult( TokenService.WriteToken(token) );
+        return new OkObjectResult(TokenService.WriteToken(token));
     }
 }
-
-

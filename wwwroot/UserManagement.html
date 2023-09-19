@@ -10,6 +10,7 @@
 </head>
 
 <body>
+    <div class="users-container">
     <h1>User Management</h1>
     <h3>Add</h3>
     <form action="javascript:void(0);" method="POST" onsubmit="addUser()">
@@ -38,18 +39,19 @@
     </div>
 
     <p id="counter"></p>
-
-    <table>
+    <div class="container">
+    <table class="table table-sm">
         <tr>
-            <th>Id</th>
-            <th>UserName</th>
-            <th>Password</th>
-            <th>Classification</th>
-            <th></th>
+            <th scope="col">Id</th>
+            <th scope="col">UserName</th>
+            <th scope="col">Password</th>
+            <th scope="col">Classification</th>
+            <th scope="col"></th>
         </tr>
         <tbody id="users"></tbody>
     </table>
-
+</div>
+</div>
     <script src="js/UserManagement.js" asp-append-version="true"></script>
     <script type="text/javascript">
         getUsers();

@@ -1,4 +1,20 @@
-[{"Id":"1","UserName":"Michal","Classification":"admin","Password":"MI1235432"},
-{"Id":"2","UserName":"Esti","Classification":"admin","Password":"STG3663"},
-{"Id":"3","UserName":"FM","Classification":"agent","Password":"fmk5543"},
-{"Id":"4","UserName":"Rachel","Classification":"admin","Password":"R32134r1"}]
+[
+    {
+        "Id": "1",
+        "UserName": "MichalCohen",
+        "Classification": "admin",
+        "Password": "MI1235432"
+    },
+    {
+        "Id": "2",
+        "UserName": "EstiGabay",
+        "Classification": "admin",
+        "Password": "estiG6558"
+    },
+    {
+        "Id": "3",
+        "UserName": "FMKolchin",
+        "Classification": "agent",
+        "Password": "fmk5543"
+    }
+]

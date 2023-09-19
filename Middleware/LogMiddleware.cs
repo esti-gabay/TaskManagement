@@ -1,6 +1,5 @@
 using System.Diagnostics;
 using lesson1.Interfaces;
-using System.Threading.Tasks;
 
 namespace lesson1.Middleware
 {

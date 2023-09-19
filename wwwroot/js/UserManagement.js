@@ -1,11 +1,11 @@
 const uri = '/User';
 let users = [];
 const token = sessionStorage.getItem('auth');
-const user =parseJwt(token.split(' ')[1]);
+const user = parseJwt(token.split(' ')[1]);
 alert(user.Classification);
 
 function getUsers() {
-     fetch(uri ,{headers:{'Authorization':token}})
+    fetch(uri, { headers: { 'Authorization': token } })
         .then(response => response.json())
         .then(data => _displayUsers(data))
         .catch(error => console.error('Unable to get items.', error));
@@ -18,17 +18,17 @@ function addUser() {
 
     alert('Add User');
     const item = {
-        id:"",
+        id: "",
         username: addUserNameTextbox.value.trim(),
         password: addPasswordTextbox.value.trim(),
-        classification:addClassificationTextbox.value
+        classification: addClassificationTextbox.value
 
     };
 
     fetch(uri, {
         method: 'POST',
         headers: {
-            'Authorization':token,
+            'Authorization': token,
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
@@ -47,8 +47,8 @@ function addUser() {
 function deleteUser(id) {
     fetch(`${uri}/${id}`, {
         method: 'DELETE',
-        headers:{'Authorization':token}
-      
+        headers: { 'Authorization': token }
+
     })
         .then(() => getUsers())
         .catch(error => console.error('Unable to delete item.', error));
@@ -72,11 +72,11 @@ function updateUser() {
         password: document.getElementById('edit-password').value.trim(),
         classification: document.getElementById('edit-classification').value
     };
-alert(item.classification)
+    alert(item.classification)
     fetch(`${uri}/${item.id}`, {
         method: 'PUT',
         headers: {
-            'Authorization':token,
+            'Authorization': token,
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
@@ -111,58 +111,58 @@ function _displayUsers(data) {
     data.forEach(item => {
 
 
-    let agentOption = document.createElement('option');
-    agentOption.value = "agent";
-    agentOption.innerHTML="agent";
-    let adminOption = document.createElement('option');
-    adminOption.value = "admin";
-    adminOption.innerHTML="admin";
-    
-    let selector = document.createElement('select');
-    selector.appendChild(agentOption);
-    selector.appendChild(adminOption);
-    selector.disabled=true;
-    selector.value=item.classification;
+        let agentOption = document.createElement('option');
+        agentOption.value = "agent";
+        agentOption.innerHTML = "agent";
+        let adminOption = document.createElement('option');
+        adminOption.value = "admin";
+        adminOption.innerHTML = "admin";
 
-    let editButton = button.cloneNode(false);
-    editButton.innerText = 'Edit';
-    editButton.setAttribute('onclick', `displayEditForm(${item.id})`);
+        let selector = document.createElement('select');
+        selector.appendChild(agentOption);
+        selector.appendChild(adminOption);
+        selector.disabled = true;
+        selector.value = item.classification;
 
-    let deleteButton = button.cloneNode(false);
-    deleteButton.innerText = 'Delete';
-    deleteButton.setAttribute('onclick', `deleteUser(${item.id})`);
+        let editButton = button.cloneNode(false);
+        editButton.innerText = 'Edit';
+        editButton.setAttribute('onclick', `displayEditForm(${item.id})`);
 
-    let tr = tBody.insertRow();
+        let deleteButton = button.cloneNode(false);
+        deleteButton.innerText = '❌';
+        deleteButton.setAttribute('onclick', `deleteUser(${item.id})`);
 
-    let td1 = tr.insertCell(0);
-    let textIdNode = document.createTextNode(item.id);
-    td1.appendChild(textIdNode);
+        let tr = tBody.insertRow();
+
+        let td1 = tr.insertCell(0);
+        let textIdNode = document.createTextNode(item.id);
+        td1.appendChild(textIdNode);
 
 
-    let td2 = tr.insertCell(1);
-    let textUserNameNode = document.createTextNode(item.userName);
-    td2.appendChild(textUserNameNode);
+        let td2 = tr.insertCell(1);
+        let textUserNameNode = document.createTextNode(item.userName);
+        td2.appendChild(textUserNameNode);
 
-    let td3 = tr.insertCell(2);
-    let textPassswordNode = document.createTextNode(item.password);
-    td3.appendChild(textPassswordNode);
+        let td3 = tr.insertCell(2);
+        let textPassswordNode = document.createTextNode(item.password);
+        td3.appendChild(textPassswordNode);
 
-    let td4 = tr.insertCell(3);
-    td4.appendChild(selector);
+        let td4 = tr.insertCell(3);
+        td4.appendChild(selector);
 
-    let td5 = tr.insertCell(4);
-    td5.appendChild(editButton);
+        let td5 = tr.insertCell(4);
+        td5.appendChild(editButton);
 
-    let td6 = tr.insertCell(5);
-    td6.appendChild(deleteButton);
-});
+        let td6 = tr.insertCell(5);
+        td6.appendChild(deleteButton);
+    });
 
-users = data;
+    users = data;
 }
- function parseJwt (token){
+function parseJwt(token) {
     var base64Url = token.split('.')[1];
     var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+    var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function (c) {
         return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
     }).join(''));
 
