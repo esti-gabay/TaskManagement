@@ -25,15 +25,17 @@ const varify = () => {
             // username.value = '';
             // password.value=''
             if (response.ok) {
-                return response.json();
+                return response.text();
             }
             else
                 throw new Error('Invalid');
         })
         .then(res => {
-            sessionStorage.setItem('auth', "Bearer " + res.token);
-            sessionStorage.setItem('UserId', res.classification);
-            if (res.classification === "admin")
+           const classification = parseJwt(res.split('\"')[1]);
+           alert(classification.Classification);
+            sessionStorage.setItem('auth', "Bearer ".concat(res.split('\"')[1]) );
+            alert(sessionStorage.getItem('auth'));
+            if (classification.Classification === "admin")
              {
                 window.location.href = './UserManagement.html';
             }
@@ -46,7 +48,15 @@ const varify = () => {
 }
 
 
+function parseJwt (token){
+  var base64Url = token.split('.')[1];
+  var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+  var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+  }).join(''));
 
+  return JSON.parse(jsonPayload);
+}
 
 
 

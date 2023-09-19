@@ -79,12 +79,10 @@ new Claim("Classification",authUser.Classification),
 };
 
         var token = TokenService.GetToken(claims);
-        string myToken = HttpContext.Request.Headers["Authorization"];
+        //string myToken = HttpContext.Request.Headers["Authorization"]!;
 
-        return new OkObjectResult(new { Token = TokenService.WriteToken(token), UserId = authUser.Id, Classification = authUser.Classification });
+        return new OkObjectResult( TokenService.WriteToken(token) );
     }
-
-
 }
 
 
